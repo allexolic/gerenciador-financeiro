@@ -3,6 +3,9 @@ package com.allexolic.controlefinanceiro.controllers;
 import com.allexolic.controlefinanceiro.entities.Produto;
 import com.allexolic.controlefinanceiro.services.ProdutoService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -20,8 +23,8 @@ public class ProdutoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Produto>> getAllProdutos() {
-        List<Produto> body = produtoService.getAll();
+    public ResponseEntity<List<Produto>> getAllProdutos(@PageableDefault(direction = Sort.Direction.ASC, sort = "id")Pageable pageable) {
+        List<Produto> body = produtoService.getAll(pageable);
         return ResponseEntity.ok().body(body);
     }
 

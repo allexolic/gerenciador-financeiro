@@ -1,11 +1,15 @@
 package com.allexolic.controlefinanceiro.services;
 
+import com.allexolic.controlefinanceiro.controllers.exceptions.ResourceNotFoundException;
 import com.allexolic.controlefinanceiro.entities.Compra;
 import com.allexolic.controlefinanceiro.repositories.CompraRepository;
 import lombok.val;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CompraService {
@@ -15,8 +19,15 @@ public class CompraService {
         this.compraRepository = compraRepository;
     }
 
-    public List<Compra> getAllCompra() {
-        return compraRepository.findAll();
+    public List<Compra> getAllCompra(Pageable pageable) {
+        return compraRepository.findAll(pageable).stream().collect(Collectors.toList());
+    }
+
+    public Compra getCompraById(String id) {
+        Optional<Compra> compra = compraRepository.findById(id);
+        if(!compra.isPresent())
+            throw new ResourceNotFoundException("Registro de compra não encontrado");
+        return compra.get();
     }
 
     public void addCompra(Compra compra) {

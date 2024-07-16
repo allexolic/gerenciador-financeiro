@@ -4,6 +4,7 @@ import com.allexolic.controlefinanceiro.controllers.exceptions.ResourceNotFoundE
 import com.allexolic.controlefinanceiro.entities.Fabricante;
 import com.allexolic.controlefinanceiro.repositories.FabricanteRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,8 +18,8 @@ public class FabricanteService {
         this.repository = repository;
     }
 
-    public List<Fabricante> getAll(){
-        return repository.findAll();
+    public List<Fabricante> getAll(Pageable pageable){
+        return repository.findAll(pageable).stream().toList();
     }
 
     public Fabricante getById(String id) {
